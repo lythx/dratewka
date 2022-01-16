@@ -1,0 +1,59 @@
+@font-face { 
+    font-family: PressStart2P; 
+    src: url('fonts/PressStart2P.ttf'); 
+} 
+
+:root{
+    --darkgray: rgb(31,31,31);
+    --gray:rgb(192,192,192)
+}
+
+*{
+    font-family:  PressStart2P;
+    color:var(--gray);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+main{
+    width: 100vw;
+    height:100vh;
+    background:black;
+    display: grid;
+    place-content: center;
+}
+
+#content{
+    width:900px;
+    height:500px;
+    background: var(--darkgray);
+}
+
+#content>*{
+    font-size: 20px;
+    margin:15px;
+}
+
+#img{
+    width:384px;
+    height:240px;
+    background-size: cover;
+    border:3px solid var(--gray)
+}
+
+#question{
+    float:left;
+}
+
+#content>input{
+    background: var(--darkgray);
+    border:none;
+    text-transform: uppercase;
+}
+
+#content>input:focus{
+    outline:none;
+}
+
+
