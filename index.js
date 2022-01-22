@@ -1,5 +1,4 @@
 import data from './data/data.js'
-console.log(data)
 
 class Location {
     title
@@ -20,7 +19,6 @@ class Render extends Location {
     items
     constructor(x, y, items) {
         super(x, y)
-        console.log(x)
         this.items = items
         document.getElementById('title').innerHTML = this.title
         document.getElementById('img').style.backgroundImage = `url('./img/${this.img}')`
@@ -29,7 +27,7 @@ class Render extends Location {
         document.getElementById('see').innerHTML = this.getSee()
         document.getElementById('items').innerHTML = this.getItems()
         document.getElementById('write').value = ''
-        window.onkeydown = e => this.handleKeydown(e, x, y, items)
+        window.onkeydown = e => this.handleKeydown(e, x, y)
     }
     getDirection() {
         let str = 'You can go'
@@ -63,25 +61,25 @@ class Render extends Location {
             str += 'nothing'
         return str
     }
-    handleKeydown(e, x, y, items) {
+    handleKeydown(e, x, y) {
         if (e.key != 'Enter') return
         const move = (document.getElementById('write').value).toUpperCase()
         switch (move) {
             case 'WEST', 'W':
                 if (this.directions.includes('W'))
-                    new Render(x - 1, y, items)
+                    new Render(x - 1, y, this.items)
                 break
             case 'NORTH', 'N':
                 if (this.directions.includes('N'))
-                    new Render(x, y - 1, items)
+                    new Render(x, y - 1, this.items)
                 break
             case 'EAST', 'E':
                 if (this.directions.includes('E'))
-                    new Render(x + 1, y, items)
+                    new Render(x + 1, y, this.items)
                 break
             case 'SOUTH', 'S':
                 if (this.directions.includes('S'))
-                    new Render(x, y + 1, items)
+                    new Render(x, y + 1, this.items)
         }
     }
 }

@@ -28,7 +28,7 @@ export default [
             "title": "An old deserted hut",
             "img": "15.gif",
             "color": "rgb(220,204,61)",
-            "directions": ['W', 'E',]
+            "directions": ['W', 'E']
         },
         {
             "title": "The edge of a forest",
@@ -78,13 +78,13 @@ export default [
             "title": "You are in a forest",
             "img": "26 i 65.gif",
             "color": "rgb(167,245,63)",
-            "directions": ['W', 'E',]
+            "directions": ['W', 'E']
         },
         {
             "title": "You are in a deep forest",
             "img": "27 i 67.gif",
             "color": "rgb(140,253,99)",
-            "directions": ['W', 'N',]
+            "directions": ['W', 'N']
         }
     ],
     [
