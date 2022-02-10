@@ -1,6 +1,10 @@
-import data from './data/data.js'
+import locationData from './data/locationData.js'
+import itemData from './data/itemData.js'
 
-const Els = {
+const SHORT_TIMEOUT = 0
+const LONG_TIMEOUT = 0
+
+const divs = {
     content: document.getElementById('content'),
     title: document.getElementById('title'),
     img: document.getElementById('img'),
@@ -19,7 +23,7 @@ class Location {
     directions = ['W', 'N', 'E', 'S']
     see = 'none'
     constructor(x, y) {
-        let loc = data[y][x]
+        let loc = locationData[y][x]
         this.title = loc.title
         this.img = loc.img
         this.color = loc.color
@@ -30,6 +34,9 @@ class Location {
 class Render extends Location {
     items
 
+    vocabularyDispyated = false
+    gossipsDisplayed = false
+
     constructor(x, y, items, direction) {
         super(x, y)
         this.items = items
@@ -38,24 +45,32 @@ class Render extends Location {
     }
 
     generateHTML = async (direction) => {
-        Els.write.value = ''
-        Els.question.innerHTML = `You are going ${direction}`
-        if (Els.title.innerHTML != '')
+        divs.write.value = ''
+        divs.write.style.display = 'none'
+        divs.question.innerHTML = `You are going ${direction}`
+        if (divs.title.innerHTML != '')
             await this.imgAnimation()
         document.getElementById('imganimation').style.height = '0'
-        Els.img.style.backgroundImage = `url('./img/${this.img}')`
-        Els.img.style.backgroundColor = this.color
-        Els.title.innerHTML = this.title
-        await new Promise(r => setTimeout(r, 100))
+        divs.img.style.backgroundImage = `url('./img/${this.img}')`
+        divs.img.style.backgroundColor = this.color
+        await this.generateText()
+        document.getElementById('write').focus()
+    }
+
+    generateText = async () => {
+        divs.title.innerHTML = this.title
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
         this.updateCompass()
-        await new Promise(r => setTimeout(r, 100))
-        Els.direction.innerHTML = this.getDirection()
-        await new Promise(r => setTimeout(r, 100))
-        Els.see.innerHTML = this.getSee()
-        await new Promise(r => setTimeout(r, 100))
-        Els.items.innerHTML = this.getItems()
-        await new Promise(r => setTimeout(r, 100))
-        Els.question.innerHTML = 'What now?'
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.direction.innerHTML = this.getDirection()
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.see.innerHTML = this.getSee()
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.items.innerHTML = this.getItems()
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.question.innerHTML = 'What now?'
+        divs.write.style.display = 'initial'
+        return
     }
 
     imgAnimation = async () => {
@@ -74,7 +89,7 @@ class Render extends Location {
             n += 4
         }
         window.requestAnimationFrame(animate)
-        return await new Promise(r => setTimeout(r, 1000));
+        return await new Promise(r => setTimeout(r, LONG_TIMEOUT));
     }
 
     updateCompass = () => {
@@ -121,8 +136,16 @@ class Render extends Location {
     }
 
     handleKeydown = (e, x, y) => {
+        if (this.vocabularyDisplayed) {
+            this.deleteVocabulary()
+            return
+        }
+        else if (this.gossipsDisplayed) {
+            this.deleteGossips()
+            return
+        }
         if (e.key != 'Enter') return
-        const query = (Els.write.value).toUpperCase()
+        const query = (divs.write.value).toUpperCase()
         if (query.split(' ').length == 1) {  //commands without parameter
             switch (query) {
                 case 'W': case 'WEST':
@@ -179,13 +202,13 @@ class Render extends Location {
     }
 
     badDirection = async () => {
-        Els.write.style.display = 'none'
-        Els.question.innerHTML = `You can't go that way`
-        await new Promise(r => setTimeout(r, 1000));
-        Els.write.style.display = 'initial'
-        Els.question.innerHTML = `What now?`
-        Els.write.value = ''
-        Els.write.focus()
+        divs.write.style.display = 'none'
+        divs.question.innerHTML = `You can't go that way`
+        await new Promise(r => setTimeout(r, LONG_TIMEOUT));
+        divs.write.style.display = 'initial'
+        divs.question.innerHTML = `What now?`
+        divs.write.value = ''
+        divs.write.focus()
     }
 
     takeItem = () => {
@@ -201,12 +224,16 @@ class Render extends Location {
     }
 
     displayVocabulary = async () => {
-        Els.write.style.display = 'none'
-        Els.question.innerHTML = ''
-        await new Promise(r => setTimeout(r, 100))
-        Els.items.innerHTML = ''
-        Els.see.innerHTML = ''
-        Els.direction.innerHTML = ''
+        this.vocabularyDisplayed = true
+        divs.write.value = ''
+        divs.write.style.display = 'none'
+        divs.question.innerHTML = ''
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.items.innerHTML = ''
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.see.innerHTML = ''
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.direction.innerHTML = ''
         const arr =
             [
                 'NORTH or N, SOUTH or S<br>',
@@ -218,14 +245,86 @@ class Render extends Location {
                 'Press any key'
             ]
         for (const e of arr) {
-            Els.direction.innerHTML += e
-            await new Promise(r => setTimeout(r, 50))
-
+            divs.direction.innerHTML += e
+            await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
         }
     }
 
-    badCommand = () => {
-        console.log('bad')
+    deleteVocabulary = async () => {
+        this.vocabularyDisplayed = false
+        const arr =
+            [
+                'NORTH or N, SOUTH or S<br>',
+                'WEST or W, EAST or E<br>',
+                'TAKE (object) or T (object)<br>',
+                'DROP (object) or D (object)<br>',
+                'USE (object) or U (object)<br>',
+                'GOSSIPS or G, VOCABULARY or V<br>',
+                'Press any key'
+            ]
+        for (let i = arr.length; i >= 0; i--) {
+            divs.direction.innerHTML = ''
+            for (let j = 0; j < i; j++)
+                divs.direction.innerHTML += arr[j]
+            await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        }
+        this.generateText()
+    }
+
+    displayGossips = async () => {
+        this.gossipsDisplayed = true
+        divs.write.value = ''
+        divs.write.style.display = 'none'
+        divs.question.innerHTML = ''
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.items.innerHTML = ''
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.see.innerHTML = ''
+        await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        divs.direction.innerHTML = ''
+        const arr = [
+            "The  woodcutter lost  his home key...<br>",
+            "The butcher likes fruit... The cooper<br>",
+            "is greedy... Dratewka plans to make a<br>",
+            "poisoned  bait for the dragon...  The<br>",
+            "tavern owner is buying food  from the<br>",
+            "pickers... Making a rag from a bag...<br>",
+            "Press any key"
+        ]
+        for (const e of arr) {
+            divs.direction.innerHTML += e
+            await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        }
+    }
+
+    deleteGossips = async () => {
+        this.gossipsDisplayed = false
+        const arr =
+            [
+                "The  woodcutter lost  his home key...<br>",
+                "The butcher likes fruit... The cooper<br>",
+                "is greedy... Dratewka plans to make a<br>",
+                "poisoned  bait for the dragon...  The<br>",
+                "tavern owner is buying food  from the<br>",
+                "pickers... Making a rag from a bag...<br>",
+                "Press any key"
+            ]
+        for (let i = arr.length; i >= 0; i--) {
+            divs.direction.innerHTML = ''
+            for (let j = 0; j < i; j++)
+                divs.direction.innerHTML += arr[j]
+            await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
+        }
+        this.generateText()
+    }
+
+    badCommand = async () => {
+        divs.question.innerHTML = 'Try another word or V for vocabulary'
+        divs.write.value = ''
+        divs.write.style.display = 'none'
+        await new Promise(r => setTimeout(r, LONG_TIMEOUT))
+        divs.question.innerHTML = 'What now?'
+        divs.write.style.display = 'initial'
     }
 }
 
@@ -236,6 +335,7 @@ document.onmousedown = (e) => {
 window.addEventListener('DOMContentLoaded', async () => {
     new Render(6, 3, 'none')
 })
+
 
 // const getjson = (str) => {
 //     let rows = str.split('WIERSZ').filter(a => a !== '\n').map(a => a.substring(4, a.length))
@@ -252,3 +352,122 @@ window.addEventListener('DOMContentLoaded', async () => {
 //     }
 //     return JSON.stringify(arr)
 // }
+
+// const getjson2 = (str) => {
+//     let items = str.split('\n')
+//     let arr = []
+//     for (const e of items) {
+//         const id = e.split(' - ')[0]
+//         const longName = e.split(' - ')[1].split(',')[0]
+//         const flag = e.split(',')[1]
+//         const name = e.split(',')[2]
+//         arr.push({ id, longName, flag, name })
+//     }
+//     return JSON.stringify(arr)
+// }
+
+// const getjson3 = (str) => {
+//     let rows = str.split('\n')
+//     let arr = []
+//     for (const e of rows) {
+//         arr.push({
+//             loc: e.split(' - ')[0],
+//             id: e.split(' - ')[1]
+//         })
+//     }
+//     return arr
+// }
+
+// console.log(JSON.stringify(getjson3(`13 - 31
+// 15 - 27
+// 17 - 14
+// 23 - 10
+// 27 - 18
+// 32 - 32
+// 44 - 21
+// 55 - 33
+// 64 - 24`)))
+
+// let st = '[{"loc":"13","id":"31"},{"loc":"15","id":"27"},{"loc":"17","id":"14"},{"loc":"23","id":"10"},{"loc":"27","id":"18"},{"loc":"32","id":"32"},{"loc":"44","id":"21"},{"loc":"55","id":"33"},{"loc":"64","id":"24"}]'
+
+
+// const getjson4 = (locations, items, itemLocations) => {
+//     let arr = []
+//     itemLocations = JSON.parse(itemLocations)
+//     for (let i = 0; i < locations.length; i++) {
+//         let row = []
+//         for (const [j, location] of locations[i].entries()) {
+//             let hasItem = false
+//             const itemLocation = itemLocations.filter(el => el.loc == `${i + 1}${j + 1}`)[0]
+//             if (itemLocation != undefined) {
+//                 const item = items.filter(el => el.id == itemLocation.id)[0]
+//                 console.log(item)
+//                 row.push({
+//                     title: location.title,
+//                     img: location.img,
+//                     color: location.color,
+//                     directions: location.directions,
+//                     item: {
+//                         id: item.id,
+//                         longName: item.longName,
+//                         flag: item.flag,
+//                         name: item.name
+//                     }
+//                 })
+//                 hasItem = true
+//             }
+//             let obj
+//             if (!hasItem) {
+//                 obj = {
+//                     title: location.title,
+//                     img: location.img,
+//                     color: location.color,
+//                     directions: location.directions
+//                 }
+//                 if (obj.title == undefined)
+//                     for (const key in obj) {
+//                         obj[key] = 'none'
+//                     }
+//                 row.push(obj)
+//             }
+//         }
+//         arr.push(row)
+//     }
+//     return arr
+// }
+
+
+// console.log(JSON.stringify(getjson4(locationData, itemData, st)))
+
+let str = `10, 56, 11, You opened a tool shed and took an axe
+11, 67, 12, You cut sticks for sheeplegs
+12, 43, 13(L), You prepared legs for your fake sheep, OK
+14, 34, 15, The tavern owner paid you money
+15, 37, 16, The cooper sold you a new barrel
+16, 43, 17(L), You made a nice sheeptrunk, OK
+18, 36, 19, The butcher gave you wool
+19, 43, 20(L), You prepared skin for your fake sheep, OK
+21, 57, 22, You used your tools to make a rag
+22, 43, 23(L), You made a fake sheephead, OK
+24, 11, 25, You are digging... (timeout) and digging... (timeout) That's enough sulphur for you
+25, 43, 26(L), You prepared a solid poison, OK
+27, 21, 28, You got a bucket full of tar
+28, 43, 29(L), You prepared a liquid poison, OK
+gdy zebrane wszystkie przedmioty (6*OK), 43, 37, Your fake sheep is full of poison and ready to be eaten by the dragon
+37, 43, 30(L), The dragon noticed your gift... (timeout) The dragon ate your sheep and died! - podmiana grafiki na lokacji (martwy smok)!
+33, 43 + zabity smok, 34, You cut a piece of dragon's skin
+34, 57, 35, You used your tools to make shoes
+35, 41, 36, The King is impressed by your shoes`
+
+const getjson5 = (str) => {
+    let arr = []
+    let rows = str.split('\n')
+    // for (const row of rows){
+    //     row.a
+    // }
+
+    return arr
+}
+
+
+console.log(JSON.stringify(getjson5(str)))
