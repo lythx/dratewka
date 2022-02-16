@@ -100,7 +100,6 @@ main{
 #content>input{
     background: var(--darkgray);
     border:none;
-    text-transform: uppercase;
 }
 
 #content>input:focus{

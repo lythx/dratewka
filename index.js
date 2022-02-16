@@ -31,9 +31,11 @@ class Location {
     }
 }
 
+
 class Render extends Location {
     items
 
+    lastKey
     vocabularyDispyated = false
     gossipsDisplayed = false
 
@@ -42,6 +44,16 @@ class Render extends Location {
         this.items = items
         this.generateHTML(direction)
         window.onkeydown = e => this.handleKeydown(e, x, y)
+        divs.write.oninput = e => {
+            let char = e.target.value[e.target.value.length - 1]
+            if (!(/[a-zA-Z]/).test(this.lastKey) || this.lastKey.length != 1)
+                return
+            char = char.replace(/\w{1}/g, function (val) {
+                return val === val.toLowerCase() ? val.toUpperCase() : val.toLowerCase();
+            })
+            e.target.value = e.target.value.substring(0, e.target.value.length - 1) + char
+            this.prevInputLgt = divs.write.value.length
+        }
     }
 
     generateHTML = async (direction) => {
@@ -70,6 +82,7 @@ class Render extends Location {
         await new Promise(r => setTimeout(r, SHORT_TIMEOUT))
         divs.question.innerHTML = 'What now?'
         divs.write.style.display = 'initial'
+        document.getElementById('write').focus()
         return
     }
 
@@ -135,7 +148,7 @@ class Render extends Location {
         return str
     }
 
-    handleKeydown = (e, x, y) => {
+    handleKeydown = async (e, x, y) => {
         if (this.vocabularyDisplayed) {
             this.deleteVocabulary()
             return
@@ -144,8 +157,10 @@ class Render extends Location {
             this.deleteGossips()
             return
         }
-        if (e.key != 'Enter') return
-        const query = (divs.write.value).toUpperCase()
+        this.lastKey = e.key
+        if (e.key != 'Enter')
+            return
+        const query = divs.write.value
         if (query.split(' ').length == 1) {  //commands without parameter
             switch (query) {
                 case 'W': case 'WEST':
