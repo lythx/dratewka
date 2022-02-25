@@ -2,8 +2,8 @@ import data from './data/data.js'
 
 console.log(data)
 
-const SHORT_TIMEOUT = 0
-const LONG_TIMEOUT = 0
+const SHORT_TIMEOUT = 100
+const LONG_TIMEOUT = 1000
 
 const divs = {
     content: document.getElementById('content'),
@@ -20,6 +20,44 @@ const divs = {
 let state = {
     carry: 'none',
     dragonDead: false
+}
+
+class Start {
+    isDisplayed = true
+    constructor() {
+        this.displayStart()
+        window.addEventListener('keydown', this.deleteStart)
+    }
+    displayStart = async () => {
+        let div = document.createElement('div')
+        div.id = 'startimg'
+        div.classList.add('start')
+        document.getElementById('wrapper').appendChild(div)
+        await new Promise(r => setTimeout(r, 5000));
+        if (!this.isDisplayed)
+            return
+        document.querySelector('.start').remove()
+        div = document.createElement('div')
+        div.id = 'starttext1'
+        div.classList.add('start')
+        document.getElementById('wrapper').appendChild(div)
+        await new Promise(r => setTimeout(r, 20000));
+        if (!this.isDisplayed)
+            return
+        document.querySelector('.start').remove()
+        div = document.createElement('div')
+        div.id = 'starttext2'
+        div.classList.add('start')
+        document.getElementById('wrapper').appendChild(div)
+    }
+
+    deleteStart = () => {
+        this.isDisplayed = false
+        document.querySelector('.start').remove()
+        window.removeEventListener('keydown', this.deleteStart)
+        new Render(6, 3, 'none')
+    }
+
 }
 
 class Location {
@@ -203,7 +241,8 @@ class Render extends Location {
         if (query.split(' ').length == 1) {  //commands without parameter
             switch (query) {
                 case 'W': case 'WEST':
-                    if (this.title == "You are inside a dragon's cave")
+                    if (this.title == "You are inside a dragon's cave"
+                        && !state.dragonDead)
                         this.displayInfoWithTimeouts([
                             `You can't go that way...`,
                             `The dragon sleeps in a cave!`
@@ -480,7 +519,10 @@ class Render extends Location {
     }
 
     endGame = () => {
-        alert("END")
+        document.getElementById('wrapper').innerHTML = ''
+        let div = document.createElement('div')
+        div.id = 'end'
+        document.getElementById('wrapper').appendChild(div)
     }
 }
 
@@ -489,7 +531,7 @@ document.onmousedown = (e) => {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-    new Render(6, 3, 'none')
+    new Start()
 })
 
 

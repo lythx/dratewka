@@ -14,14 +14,37 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
-main{
+#wrapper{
     width: 100vw;
     height:100vh;
     background:black;
     display: grid;
     place-content: center;
+}
+
+.start{
+    width:900px;
+    height:600px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-size: cover;
+}
+
+#startimg{
+    background-image: url(img/czołówka.jpg);
+}
+
+#starttext1{
+    background-image: url(img/opis_A.jpg);
+}
+
+#starttext2{
+    background-image: url(img/opis_B.jpg);
 }
 
 #content{
@@ -64,7 +87,7 @@ main{
 .compasshide{
     position: absolute;
     background: none;
-    width:23px;
+    width:24px;
     height:23px;
 }
 
@@ -84,7 +107,7 @@ main{
 }
 
 #w{
-    left:23px;
+    left:22px;
     top:47px;
 }
 
@@ -106,4 +129,13 @@ main{
     outline:none;
 }
 
-
+#end{
+    width:900px;
+    height:600px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-size:contain;
+    background-image: url(img/sus.jpg);
+}
