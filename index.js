@@ -325,12 +325,6 @@ class Render extends Location {
                 longName: action.longName
             }
         else if (action.flag === '0') {
-            data[this.y][this.x].items.push({
-                flag: action.flag,
-                id: action.id,
-                name: action.name,
-                longName: action.longName
-            })
             this.items.push({
                 flag: action.flag,
                 id: action.id,
