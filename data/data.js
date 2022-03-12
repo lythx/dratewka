@@ -1,4 +1,4 @@
-export default [
+let data = [
     [
         {
             "title": "You are inside a brimstone mine",

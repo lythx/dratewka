@@ -7,149 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dratewka</title>
     <link rel='stylesheet' href='index.css'>
-    <script src='index.js' defer type='module'></script>
+    <script src='index.js' defer></script>
+    <script src='data/data.js'></script>
 </head>
 
 <body>
     <div id="wrapper">
         <div id="content">
-            <div id="title"></div>
-            <div id="img">
-                <div id="imganimation"></div>
-            </div>
-            <div id="compass">
-                <div class='compasshide' id='n'></div>
-                <div class='compasshide' id='e'></div>
-                <div class='compasshide' id='s'></div>
-                <div class='compasshide' id='w'></div>
-            </div>
-            <div id="direction"></div>
-            <div id="see"></div>
-            <div id="items"></div>
-            <div id="question"></div>
-            <input type="text" id="write" autofocus='true'>
+            <div id="question">Press any key to start...</div>
         </div>
     </div>
 </body>
 
 </html>
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
- 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .location {
-            border: solid 1px;
-            width: 50px;
-            height: 50px;
-            margin: 5px;
-            float: left;
-        }
- 
-        .location:nth-child(2n+1) {
-            clear: both;
-        }
-    </style>
-    <script>
-        class Location {
-            html; // = null
- 
-            constructor(who, height) {
-                this.who = who;
-                this.height = height;
-                this.init();
-            }
- 
-            init() {
-                let pos = document.createElement("div");
-                pos.classList.add("location");
- 
-                /*
-                let dys = this;
-                pos.onclick = function () {
-                    console.log(this, dys);
-                    alert(dys.who);
-                }*/
- 
-                /*
-                pos.onclick = (e) => {
-                    console.log(this, e.target);
-                }*/
- 
-                /*
-                pos.onclick = function (e) {
-                    console.log(this, e.target)
-                }.bind(this)
-                */
-                pos.addEventListener("click", (e) => {
-                    //console.log(this);
-                    this.iam(this, e.target)
-                });
- 
-                this.html = pos;
-                document.getElementById("cont").appendChild(pos);
-            }
- 
-            iam(d, el) {
-                console.log(this, d, el);
- 
-            }
-        }
- 
- 
- 
- 
-        window.addEventListener('DOMContentLoaded', (event) => {
- 
-            game = {
-                pos_x: 0,
-                pos_y: 0,
-                board: [
-                    [new Location("brunette", 176), new Location("brown hair", 148)],
-                    [new Location("redhead", 186), new Location("blonde", 162)]
-                ],
-                report: function (p) {
-                    console.log(p.who, p.height);
-                },
-                go: function (direction) {
-                    if (direction == "up") this.pos_y--;
-                    if (direction == "down") this.pos_y++;
-                    if (direction == "left") this.pos_x--;
-                    if (direction == "right") this.pos_x++;
-                    this.highlight();
- 
-                },
-                highlight: function () {
-                    let person = this.board[this.pos_y][this.pos_x];
-                    for (let i = 0; i < this.board.length; i++)
-                        for (let j = 0; j < this.board.length; j++)
-                            this.board[i][j].html.style.backgroundColor = "white"
-                    person.html.style.backgroundColor = "pink";
-                    this.report(person);
-                }
-            }
- 
-            game.highlight();
- 
- 
-        });
-    </script>
-</head>
- 
-<body>
-    <button onclick="game.go('left');">LEFT</button>
-    <button onclick="game.go('up');">UP</button>
-    <button onclick="game.go('down');">DOWN</button>
-    <button onclick="game.go('right');">RIGHT</button>
-    <div id="cont">
- 
-    </div>
-</body>
- 
-</html>-->
