@@ -1,5 +1,5 @@
-const SHORT_TIMEOUT = 0
-const LONG_TIMEOUT = 0
+const SHORT_TIMEOUT = 100
+const LONG_TIMEOUT = 1000
 const IMPORTANT_TIMEOUT = 1000
 
 let divs = {}
