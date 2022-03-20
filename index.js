@@ -119,7 +119,7 @@ class Render extends Location {
             if (!(/[a-zA-Z]/).test(this.lastKey) || this.lastKey.length != 1)
                 return
             char = char.replace(/\w{1}/g, function (val) {
-                return val === val.toLowerCase() ? val.toUpperCase() : val.toLowerCase();
+                return val === val.toLowerCase() ? val.toUpperCase() : val.toUpperCase();
             })
             e.target.value = e.target.value.substring(0, e.target.value.length - 1) + char
             this.prevInputLgt = divs.write.value.length
