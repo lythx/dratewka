@@ -557,6 +557,12 @@ document.onmousedown = (e) => {
     e.preventDefault();
 }
 
+const focusKeydown = () => {
+    window.addEventListener('keydown', () => {
+        divs.write.focus()
+    })
+}
+
 const displayStart = () => {
     window.removeEventListener('keydown', displayStart)
     new Start()
