@@ -76,6 +76,7 @@ class Start {
             question: document.getElementById('question'),
             write: document.getElementById('write')
         }
+        focusKeydown()
         new Render(6, 3, 'none')
     }
 

@@ -5,7 +5,7 @@
 
 :root{
     --darkgray: rgb(31,31,31);
-    --gray:rgb(192,192,192)
+    --gray:rgb(192,192,192);
 }
 
 *{
@@ -137,5 +137,5 @@
     top: 50%;
     transform: translate(-50%,-50%);
     background-size:contain;
-    background-image: url(img/sus.jpg);
+    background-image: url(img/sus.png);
 }
