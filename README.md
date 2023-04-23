@@ -15,3 +15,12 @@ I created this remake as a high school project. It's entirely developed in plain
 The player performs actions using text commands. To display the command list use "V" or "Vocabulary". (screenshot below)
 ## Screenshots
 
+![1](https://cdn.discordapp.com/attachments/522878388269088782/1099707105096769536/1.png)  
+
+![2](https://cdn.discordapp.com/attachments/522878388269088782/1099707104643776532/2.png)  
+
+![3](https://cdn.discordapp.com/attachments/522878388269088782/1099707104870289438/3.png)  
+
+![4](https://cdn.discordapp.com/attachments/522878388269088782/1099707105625251900/gossips.png)  
+
+![5](https://cdn.discordapp.com/attachments/522878388269088782/1099707105335857244/vocabulary.png)  
